@@ -1,0 +1,175 @@
+.timeSegmentBlock {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 80px;
+}
+
+.circleSection {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.centralCircle {
+  position: relative;
+  width: 530px;
+  height: 530px;
+
+  @media (max-width: 768px) {
+    width: 400px;
+    height: 400px;
+  }
+
+  @media (max-width: 480px) {
+    width: 300px;
+    height: 300px;
+  }
+}
+
+.category {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  z-index: 10;
+  text-align: center;
+}
+
+.period {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 200px;
+  font-weight: bold;
+  color: #426b1f;
+  z-index: 10;
+  line-height: 1;
+
+  @media (max-width: 768px) {
+    font-size: 120px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 80px;
+  }
+}
+
+.sliderSection {
+  width: 100%;
+  max-width: 600px;
+}
+
+.sliderContainer {
+  position: relative;
+}
+
+.event {
+  max-width: 500px;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.eventDate {
+  font-size: 25px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #426b1f;
+}
+
+.eventDescription {
+  font-size: 20px;
+  line-height: 1.4;
+}
+
+.sliderControls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px;
+  padding: 0 20px;
+}
+
+.navigationButtons {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+// Стили для Swiper
+.swiper-button-prev,
+.swiper-button-next {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #426b1f;
+  background: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  color: #426b1f;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover:not(:disabled) {
+    background: #426b1f;
+    color: white;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.swiper-pagination {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .container {
+    gap: 50px;
+  }
+
+  .eventDate {
+    font-size: 22px;
+  }
+
+  .eventDescription {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .timeSegmentBlock {
+    padding: 20px 10px;
+  }
+
+  .eventDate {
+    font-size: 20px;
+  }
+
+  .eventDescription {
+    font-size: 16px;
+  }
+
+  .sliderControls {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
