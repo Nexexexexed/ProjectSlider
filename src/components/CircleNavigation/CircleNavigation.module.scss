@@ -10,6 +10,12 @@
   overflow: visible;
 }
 
+@media (max-width: 640px) {
+  .circleContainer {
+    display: none;
+  }
+}
+
 .pointGroup {
   cursor: pointer;
   &:hover {

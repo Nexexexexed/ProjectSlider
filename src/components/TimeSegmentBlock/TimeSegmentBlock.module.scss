@@ -8,8 +8,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
   margin: auto;
+}
+
+.titleBlock {
+  position: absolute;
+  top: 3rem;
+}
+
+.dotsIndicator {
+  display: none;
 }
 
 .mainTitle {
@@ -17,7 +25,7 @@
   font-weight: bold;
   display: block;
   max-width: 25rem;
-  padding-left: 5rem;
+  margin-left: 5rem;
 }
 
 .mainTitle::before {
@@ -28,6 +36,20 @@
   height: 80%;
   width: 0.8rem;
   background: linear-gradient(to bottom, var(--iris), var(--fuschia));
+}
+
+@media (max-width: 640px) {
+  .mainTitle {
+    margin-top: 7.5rem;
+    font-size: 3.6rem;
+  }
+  .mainTitle::before {
+    width: 0;
+  }
+  .container {
+    align-items: flex-start;
+    margin-left: 5rem;
+  }
 }
 
 .circleSection {
@@ -41,8 +63,13 @@
 
 .timeBlock {
   position: relative;
-
   top: 5rem;
+}
+
+@media (max-width: 640px) {
+  .timeBlock {
+    display: none;
+  }
 }
 
 .periodContainer {
@@ -52,13 +79,19 @@
   top: 25%;
   margin-left: auto;
   margin-right: auto;
-
   text-align: center;
-
-  font-size: 200px;
+  font-size: 20rem;
   font-weight: bold;
   z-index: 1;
   line-height: 1;
+}
+
+@media (max-width: 640px) {
+  .periodContainer {
+    margin-top: 3.5rem;
+    gap: 5rem;
+    font-size: 10rem;
+  }
 }
 
 .periodFrom {
@@ -67,12 +100,6 @@
 
 .periodTo {
   color: var(--fuschia);
-}
-
-.titleBlock {
-  position: absolute;
-
-  top: 3rem;
 }
 
 .currentTitle {
@@ -130,12 +157,19 @@
 
 .sliderSection {
   width: 100%;
+  position: relative;
+}
+
+.mobileDivider {
+  display: none;
 }
 
 .sliderContainer {
   display: flex;
   align-items: center;
   gap: 2.5em;
+  position: relative;
+  left: -5%;
 }
 
 .event {
@@ -175,10 +209,88 @@
   }
 }
 
+@media (max-width: 640px) {
+  .mobileDivider {
+    display: block;
+    position: relative;
+    width: 90%;
+    height: 1px;
+    background-color: #d5d5d5;
+    margin: 5rem 0 5rem 0;
+  }
+
+  .sliderSection {
+    display: flex;
+    flex-direction: column-reverse;
+    margin-top: 30rem;
+    overflow: hidden;
+  }
+
+  .swiperButtonPrev,
+  .swiperButtonNext {
+    display: none;
+  }
+
+  .currentSegmentInfo {
+    font-size: 2rem;
+    font-weight: normal;
+  }
+
+  .event {
+    max-width: none;
+    padding: 1.5rem;
+  }
+
+  .eventDescription {
+    font-size: 2.5rem;
+  }
+
+  .switcherControls {
+    align-items: flex-start;
+  }
+
+  .segmentSwitcher {
+    margin-top: 7.5rem;
+  }
+
+  .dotsIndicator {
+    display: flex;
+    gap: 1.5rem;
+    margin-left: 10rem;
+  }
+
+  .dot {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background-color: var(--blue-black-opacity);
+    transition: all 0.3s ease;
+
+    &.dotActive {
+      background-color: var(--blue-black);
+      transform: scale(1.2);
+    }
+  }
+}
+
 :global {
   .swiper-button-disabled {
     opacity: 0 !important;
     visibility: hidden !important;
     pointer-events: none !important;
+  }
+
+  .swiper-slide {
+    margin-left: 2rem;
+
+    @media (max-width: 640px) {
+      transition: all 0.3s ease;
+      &.swiper-slide-active {
+        opacity: 1;
+      }
+      &:not(.swiper-slide-active) {
+        opacity: 0.5;
+      }
+    }
   }
 }

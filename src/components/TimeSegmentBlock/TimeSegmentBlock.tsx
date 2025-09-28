@@ -28,7 +28,6 @@ const TimeSegmentBlock: React.FC<TimeSegmentBlockProps> = ({ data }) => {
 
   const currentSegment = data[activeSegment];
 
-  // Функция для анимации цифр
   const animateNumbers = (
     from: number,
     to: number,
@@ -61,7 +60,6 @@ const TimeSegmentBlock: React.FC<TimeSegmentBlockProps> = ({ data }) => {
     setIsSwitching(true);
     const targetSegment = data[index];
 
-    // Анимация исчезновения свайпера
     if (sliderSectionRef.current) {
       gsap.to(sliderSectionRef.current, {
         duration: 0.3,
@@ -70,16 +68,12 @@ const TimeSegmentBlock: React.FC<TimeSegmentBlockProps> = ({ data }) => {
         onComplete: () => {
           setActiveSegment(index);
 
-          // Анимация цифр
           animateNumbers(displayFrom, targetSegment.periodFrom, setDisplayFrom);
           animateNumbers(displayTo, targetSegment.periodTo, setDisplayTo);
 
-          // Сброс свайпера
           if (swiperRef.current) {
             swiperRef.current.swiper.slideTo(0);
           }
-
-          // Анимация появления свайпера
           setTimeout(() => {
             if (sliderSectionRef.current) {
               gsap.fromTo(
@@ -168,6 +162,16 @@ const TimeSegmentBlock: React.FC<TimeSegmentBlockProps> = ({ data }) => {
               >
                 &gt;
               </button>
+              <div className={styles.dotsIndicator}>
+                {data.map((_, index) => (
+                  <div
+                    key={index}
+                    className={`${styles.dot} ${
+                      index === activeSegment ? styles.dotActive : ""
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
 
@@ -193,9 +197,16 @@ const TimeSegmentBlock: React.FC<TimeSegmentBlockProps> = ({ data }) => {
               spaceBetween={30}
               slidesPerView={3}
               breakpoints={{
-                480: { slidesPerView: 1 },
-                768: { slidesPerView: 2 },
-                1024: { slidesPerView: 3 },
+                480: {
+                  slidesPerView: 1.5,
+                  spaceBetween: 25,
+                },
+                768: {
+                  slidesPerView: 2,
+                },
+                1024: {
+                  slidesPerView: 3,
+                },
               }}
             >
               {currentSegment.events.map((event) => (
@@ -213,6 +224,7 @@ const TimeSegmentBlock: React.FC<TimeSegmentBlockProps> = ({ data }) => {
               &gt;
             </button>
           </div>
+          <div className={styles.mobileDivider}></div>
         </div>
       </div>
     </div>
