@@ -2,174 +2,183 @@
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 40px 20px;
 }
 
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 80px;
+
+  margin: auto;
+}
+
+.mainTitle {
+  font-size: 5.6rem;
+  font-weight: bold;
+  display: block;
+  max-width: 25rem;
+  padding-left: 5rem;
+}
+
+.mainTitle::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10%;
+  height: 80%;
+  width: 0.8rem;
+  background: linear-gradient(to bottom, var(--iris), var(--fuschia));
 }
 
 .circleSection {
-  position: relative;
-  width: 100%;
   display: flex;
-  justify-content: center;
 }
 
 .centralCircle {
+  width: 100%;
+  height: 100%;
+}
+
+.timeBlock {
   position: relative;
-  width: 530px;
-  height: 530px;
 
-  @media (max-width: 768px) {
-    width: 400px;
-    height: 400px;
-  }
-
-  @media (max-width: 480px) {
-    width: 300px;
-    height: 300px;
-  }
+  top: 5rem;
 }
 
-.category {
+.periodContainer {
+  display: flex;
+  gap: 10rem;
   position: absolute;
-  top: 30%;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 20px;
-  font-weight: bold;
-  color: #333;
-  z-index: 10;
+  top: 25%;
+  margin-left: auto;
+  margin-right: auto;
+
   text-align: center;
-}
 
-.period {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   font-size: 200px;
   font-weight: bold;
-  color: #426b1f;
-  z-index: 10;
+  z-index: 1;
   line-height: 1;
+}
 
-  @media (max-width: 768px) {
-    font-size: 120px;
-  }
+.periodFrom {
+  color: var(--iris);
+}
 
-  @media (max-width: 480px) {
-    font-size: 80px;
+.periodTo {
+  color: var(--fuschia);
+}
+
+.titleBlock {
+  position: absolute;
+
+  top: 3rem;
+}
+
+.currentTitle {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--black-blue);
+  text-align: right;
+}
+
+.segmentSwitcher {
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.switcherControls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.switcherButton {
+  width: 5rem;
+  height: 5rem;
+  border: 1px var(--blue-black-opacity) solid;
+  background: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--blue-black);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: white;
   }
+}
+
+.currentSegmentInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.segmentId {
+  color: var(--blue-black);
+  text-align: center;
 }
 
 .sliderSection {
   width: 100%;
-  max-width: 600px;
 }
 
 .sliderContainer {
-  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 2.5em;
 }
 
 .event {
-  max-width: 500px;
-  padding: 0 20px;
-  text-align: center;
+  max-width: 50rem;
 }
 
 .eventDate {
   font-size: 25px;
   font-weight: bold;
   margin-bottom: 15px;
-  color: #426b1f;
+  color: var(--blue);
 }
 
 .eventDescription {
-  font-size: 20px;
-  line-height: 1.4;
+  font-size: 2rem;
 }
 
-.sliderControls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 30px;
-  padding: 0 20px;
-}
-
-.navigationButtons {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-// Стили для Swiper
-.swiper-button-prev,
-.swiper-button-next {
-  width: 40px;
-  height: 40px;
-  border: 2px solid #426b1f;
+.swiperButtonPrev,
+.swiperButtonNext {
+  width: 4rem;
+  height: 4rem;
   background: transparent;
   border-radius: 50%;
+  border: 0;
+  background-color: white;
+  color: var(--blue);
   cursor: pointer;
-  font-size: 18px;
-  color: #426b1f;
+  font-size: 2em;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  &:hover:not(:disabled) {
-    background: #426b1f;
-    color: white;
-  }
+  box-shadow: 0px 0px 8px 0px #d5d5d5;
 
   &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+    opacity: 1;
   }
 }
 
-.swiper-pagination {
-  font-size: 20px;
-  font-weight: bold;
-  color: #333;
-}
-
-@media (max-width: 768px) {
-  .container {
-    gap: 50px;
-  }
-
-  .eventDate {
-    font-size: 22px;
-  }
-
-  .eventDescription {
-    font-size: 18px;
-  }
-}
-
-@media (max-width: 480px) {
-  .timeSegmentBlock {
-    padding: 20px 10px;
-  }
-
-  .eventDate {
-    font-size: 20px;
-  }
-
-  .eventDescription {
-    font-size: 16px;
-  }
-
-  .sliderControls {
-    flex-direction: column;
-    gap: 15px;
+:global {
+  .swiper-button-disabled {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
   }
 }

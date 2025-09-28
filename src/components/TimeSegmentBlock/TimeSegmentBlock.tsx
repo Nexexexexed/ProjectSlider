@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import { TimeSegment } from "../../types/type";
@@ -16,67 +16,175 @@ interface TimeSegmentBlockProps {
 
 const TimeSegmentBlock: React.FC<TimeSegmentBlockProps> = ({ data }) => {
   const [activeSegment, setActiveSegment] = useState(0);
-  const periodRef = useRef<HTMLDivElement>(null);
-  const categoryRef = useRef<HTMLDivElement>(null);
+  const [displayFrom, setDisplayFrom] = useState(data[0].periodFrom);
+  const [displayTo, setDisplayTo] = useState(data[0].periodTo);
+  const [isSwitching, setIsSwitching] = useState(false);
+
+  const periodFromRef = useRef<HTMLDivElement>(null);
+  const periodToRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLDivElement>(null);
   const swiperRef = useRef<any>(null);
+  const sliderSectionRef = useRef<HTMLDivElement>(null);
 
   const currentSegment = data[activeSegment];
 
+  // Функция для анимации цифр
+  const animateNumbers = (
+    from: number,
+    to: number,
+    setNumber: (num: number) => void
+  ) => {
+    const duration = 0.6;
+    const steps = Math.abs(to - from);
+    const stepTime = duration / steps;
+
+    let current = from;
+    const timer = setInterval(() => {
+      if ((from < to && current >= to) || (from > to && current <= to)) {
+        clearInterval(timer);
+        setNumber(to);
+        return;
+      }
+
+      if (from < to) {
+        current++;
+      } else {
+        current--;
+      }
+      setNumber(current);
+    }, stepTime * 1000);
+  };
+
   const handleSegmentChange = (index: number) => {
-    if (periodRef.current && categoryRef.current) {
-      gsap.to([periodRef.current, categoryRef.current], {
+    if (isSwitching) return;
+
+    setIsSwitching(true);
+    const targetSegment = data[index];
+
+    // Анимация исчезновения свайпера
+    if (sliderSectionRef.current) {
+      gsap.to(sliderSectionRef.current, {
         duration: 0.3,
         opacity: 0,
-        y: -20,
+        y: 20,
         onComplete: () => {
           setActiveSegment(index);
+
+          // Анимация цифр
+          animateNumbers(displayFrom, targetSegment.periodFrom, setDisplayFrom);
+          animateNumbers(displayTo, targetSegment.periodTo, setDisplayTo);
+
+          // Сброс свайпера
           if (swiperRef.current) {
             swiperRef.current.swiper.slideTo(0);
           }
-          gsap.to([periodRef.current, categoryRef.current], {
-            duration: 0.3,
-            opacity: 1,
-            y: 0,
-          });
+
+          // Анимация появления свайпера
+          setTimeout(() => {
+            if (sliderSectionRef.current) {
+              gsap.fromTo(
+                sliderSectionRef.current,
+                { opacity: 0, y: 20 },
+                { duration: 0.3, opacity: 1, y: 0 }
+              );
+            }
+            setIsSwitching(false);
+          }, 100);
         },
       });
     } else {
       setActiveSegment(index);
+      setDisplayFrom(targetSegment.periodFrom);
+      setDisplayTo(targetSegment.periodTo);
+      setIsSwitching(false);
     }
+  };
+
+  const handlePrev = () => {
+    const prevIndex = activeSegment === 0 ? data.length - 1 : activeSegment - 1;
+    handleSegmentChange(prevIndex);
+  };
+
+  const handleNext = () => {
+    const nextIndex = activeSegment === data.length - 1 ? 0 : activeSegment + 1;
+    handleSegmentChange(nextIndex);
   };
 
   return (
     <div className={styles.timeSegmentBlock}>
+      <div className={styles.titleBlock}>
+        <div className={styles.mainTitle}>Исторические даты</div>
+      </div>
       <div className={styles.container}>
         <div className={styles.circleSection}>
           <div className={styles.centralCircle}>
-            <div ref={periodRef} className={styles.period}>
-              {currentSegment.periodFrom}
-            </div>
-            <div ref={periodRef} className={styles.period}>
-              {currentSegment.periodTo}
+            <div className={styles.timeBlock}>
+              <div ref={titleRef} className={styles.currentTitle}>
+                {currentSegment.title}
+              </div>
             </div>
             <CircleNavigation
               segmentsCount={data.length}
               activeSegment={activeSegment}
               onSegmentChange={handleSegmentChange}
               titles={data.map((segment) => segment.title)}
+              ids={data.map((segment) => segment.id)}
             />
           </div>
         </div>
+        <div className={styles.periodContainer}>
+          <div ref={periodFromRef} className={styles.periodFrom}>
+            {displayFrom}
+          </div>
+          <div ref={periodToRef} className={styles.periodTo}>
+            {displayTo}
+          </div>
+        </div>
 
-        <div className={styles.sliderSection}>
+        <div ref={sliderSectionRef} className={styles.sliderSection}>
+          <div className={styles.segmentSwitcher}>
+            <div className={styles.currentSegmentInfo}>
+              <span className={styles.segmentId}>
+                {String(currentSegment.id).padStart(2, "0")}
+              </span>
+              <span className={styles.segmentSeparator}>/</span>
+              <span className={styles.totalSegments}>
+                {String(data.length).padStart(2, "0")}
+              </span>
+            </div>
+            <div className={styles.switcherControls}>
+              <button
+                className={styles.switcherButton}
+                onClick={handlePrev}
+                disabled={isSwitching}
+              >
+                &lt;
+              </button>
+
+              <button
+                className={styles.switcherButton}
+                onClick={handleNext}
+                disabled={isSwitching}
+              >
+                &gt;
+              </button>
+            </div>
+          </div>
+
           <div className={styles.sliderContainer}>
+            <button className={`${styles.swiperButtonPrev} swiperButtonPrev`}>
+              &lt;
+            </button>
             <Swiper
               ref={swiperRef}
               modules={[Navigation, Pagination]}
               navigation={{
-                nextEl: `.swiper-button-next`,
-                prevEl: `.swiper-button-prev`,
+                nextEl: `.${styles.swiperButtonNext}`,
+                prevEl: `.${styles.swiperButtonPrev}`,
               }}
               pagination={{
                 type: "fraction",
-                el: `.swiper-pagination`,
+                el: `.${styles.swiperPagination}`,
                 formatFractionCurrent: (number) =>
                   String(number).padStart(2, "0"),
                 formatFractionTotal: (number) =>
@@ -101,14 +209,9 @@ const TimeSegmentBlock: React.FC<TimeSegmentBlockProps> = ({ data }) => {
                 </SwiperSlide>
               ))}
             </Swiper>
-
-            <div className={styles.sliderControls}>
-              <div className="swiper-pagination"></div>
-              <div className={styles.navigationButtons}>
-                <button className="swiper-button-prev">←</button>
-                <button className="swiper-button-next">→</button>
-              </div>
-            </div>
+            <button className={`${styles.swiperButtonNext} swiperButtonNext`}>
+              &gt;
+            </button>
           </div>
         </div>
       </div>
